@@ -11,7 +11,7 @@ const Doctors = () => {
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/user/doctors",
+          "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/user/doctors",
           { withCredentials: true }
         );
         setDoctors(data.doctors);
