@@ -18,7 +18,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/user/login",
+          "http://localhost:4000/api/v1/user/login",
           { email, password, password, role: "Patient" },
           {
             withCredentials: true,
