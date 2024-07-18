@@ -26,7 +26,6 @@ import "./App.css";
 
 const App = () => {
   const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
-  const { isAuthenticated, setIsAuthenticated, admin, setAdmin } =
     useContext(Context);
 
   useEffect(() => {
