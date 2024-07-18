@@ -24,6 +24,7 @@ const App = () => {
           "http://localhost:4000/api/v1/user/admin/me",
           {
             withCredentials: true,
+            headers: { "Content-Type": "application/json" },
           }
         );
         setIsAuthenticated(true);
