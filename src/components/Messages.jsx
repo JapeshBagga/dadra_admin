@@ -11,7 +11,7 @@ const Messages = () => {
     const fetchMessages = async () => {
       try {
         const { data } = await axios.get(
-          "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/message/getall",
+          "https://api.dadrahospital.in/api/v1/message/getall",
           { withCredentials: true }
         );
         setMessages(data.messages);

@@ -21,7 +21,7 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/user/admin/me",
+          "https://api.dadrahospital.in/api/v1/user/admin/me",
           {
             withCredentials: true,
           }

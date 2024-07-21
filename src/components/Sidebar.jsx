@@ -18,7 +18,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     await axios
-      .get("https://seashell-app-qeo8e.ondigitalocean.app/api/v1/user/admin/logout", {
+      .get("https://api.dadrahospital.in/api/v1/user/admin/logout", {
         withCredentials: true,
       })
       .then((res) => {

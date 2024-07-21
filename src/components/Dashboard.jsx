@@ -27,7 +27,7 @@ const Dashboard = () => {
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
       const { data } = await axios.put(
-        "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/appointment/getall",
+        "https://api.dadrahospital.in/api/v1/appointment/getall",
         { status },
         { withCredentials: true }
       );

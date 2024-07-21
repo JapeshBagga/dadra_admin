@@ -18,7 +18,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/user/login",
+          "https://api.dadrahospital.in/api/v1/user/login",
           { email, password, confirmPassword: password, role: "Patient" },
           {
             withCredentials: true,

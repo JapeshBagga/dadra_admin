@@ -23,7 +23,7 @@ const AddNewAdmin = () => {
     try {
       await axios
         .post(
-          "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/user/admin/addnew",
+          "https://api.dadrahospital.in/api/v1/user/admin/addnew",
           { firstName, lastName, email, phone, nic, dob, gender, password },
           {
             withCredentials: true,
