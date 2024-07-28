@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Navigate } from "react-router-dom";
+import SERVER_URL from "../env";
+
 
 const Doctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -11,7 +13,7 @@ const Doctors = () => {
     const fetchDoctors = async () => {
       try {
         const { data } = await axios.get(
-          "https://api.dadrahospital.in/api/v1/user/doctors",
+          `${SERVER_URL}/api/v1/user/doctors`,
           { withCredentials: true }
         );
         setDoctors(data.doctors);

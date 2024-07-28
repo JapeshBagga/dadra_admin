@@ -3,6 +3,7 @@ import { Context } from "../main";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import SERVER_URL from "../env";
 
 const AddNewAdmin = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -23,7 +24,7 @@ const AddNewAdmin = () => {
     try {
       await axios
         .post(
-          "https://api.dadrahospital.in/api/v1/user/admin/addnew",
+          `${SERVER_URL}/api/v1/user/admin/addnew`,
           { firstName, lastName, email, phone, nic, dob, gender, password },
           {
             withCredentials: true,

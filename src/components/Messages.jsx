@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Navigate } from "react-router-dom";
+import SERVER_URL from "../env";
+
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
@@ -11,7 +13,7 @@ const Messages = () => {
     const fetchMessages = async () => {
       try {
         const { data } = await axios.get(
-          "https://api.dadrahospital.in/api/v1/message/getall",
+          `${SERVER_URL}/api/v1/message/getall`,
           { withCredentials: true }
         );
         setMessages(data.messages);

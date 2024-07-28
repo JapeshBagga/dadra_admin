@@ -6,6 +6,9 @@ import { toast } from "react-toastify";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import SERVER_URL from "../env";
+
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
 
@@ -13,7 +16,7 @@ const Dashboard = () => {
     const fetchAppointments = async () => {
       try {
         const { data } = await axios.get(
-          "http://localhost:4000/api/v1/appointment/getall",
+          `${SERVER_URL}/api/v1/appointment/getall`,
           { withCredentials: true }
         );
         setAppointments(data.appointments);
@@ -27,7 +30,7 @@ const Dashboard = () => {
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
       const { data } = await axios.put(
-        "https://api.dadrahospital.in/api/v1/appointment/getall",
+        `http://localhost:4000/api/v1/appointment/update/${appointmentId}`,
         { status },
         { withCredentials: true }
       );
@@ -48,6 +51,11 @@ const Dashboard = () => {
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
+  const navigateTo = useNavigate();
+
+  const AddNewOPD = (id) => {
+    navigateTo("/opd/"+id);
+  };
 
   return (
     <>
@@ -57,16 +65,14 @@ const Dashboard = () => {
             <img src="/doc.png" alt="docImg" />
             <div className="content">
               <div>
-                <p>Hello ,</p>
+                <p>Hello,</p>
                 <h5>
                   {admin &&
                     `${admin.firstName} ${admin.lastName}`}{" "}
                 </h5>
               </div>
               <p>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Facilis, nam molestias. Eaque molestiae ipsam commodi neque.
-                Assumenda repellendus necessitatibus itaque.
+                Welcome to Dadra Hospital Admin Portal
               </p>
             </div>
           </div>
@@ -91,21 +97,22 @@ const Dashboard = () => {
                 <th>Age</th>
                 <th>problem</th>
                 <th>Status</th>
+                <th>Action</th>
+
               </tr>
             </thead>
             <tbody>
               {appointments && appointments.length > 0
                 ? appointments.map((appointment) => (
-                    <tr key={appointment?._id}>
-                      <td>{`${moment(appointment?.createdAt).format('MMMM Do YYYY, h:mm:ss a')}`}</td>
-                      {/* <td>{appointment?.appointment?_date.substring(0, 16)}</td> */}
-                      {/* <td>{`${appointment?.doctor.firstName} ${appointment?.doctor.lastName}`}</td> */}
-                      <td>{appointment?.name}</td>
-                      <td>{appointment?.email}</td>
-                      <td>{appointment?.phone}</td>
-                      <td>{appointment?.age}</td>
-                      <td>{appointment?.problem}</td>
-
+                  <tr key={appointment?._id}>
+                  <td>{`${moment(appointment?.createdAt).format('Do MMMM YY')}`}</td>
+                  {/* <td>{appointment?.appointment?_date.substring(0, 16)}</td> */}
+                  {/* <td>{`${appointment?.doctor.firstName} ${appointment?.doctor.lastName}`}</td> */}
+                  <td>{appointment?.name}</td>
+                  <td>{appointment?.email}</td>
+                  <td>{appointment?.phone}</td>
+                  <td>{appointment?.age}</td>
+                  <td>{appointment?.problem}</td>
                       <td>
                         <select
                           className={
@@ -132,6 +139,8 @@ const Dashboard = () => {
                         </select>
                       </td>
                       {/* <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green"/> : <AiFillCloseCircle className="red"/>}</td> */}
+                      <td onClick={()=> AddNewOPD(appointment?._id)}>Add OPD</td>
+
                     </tr>
                   ))
                 : "No Appointments Found!"}

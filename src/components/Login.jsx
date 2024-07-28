@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
-import { Link, useNavigate, Navigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -14,12 +14,13 @@ const Login = () => {
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
+    console.log("🚀 ~ handleLogin ~ email, password:", email, password)
     e.preventDefault();
     try {
       await axios
         .post(
-          "https://api.dadrahospital.in/api/v1/user/login",
-          { email, password, confirmPassword: password, role: "Patient" },
+          "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/user/login",
+          { email, password, confirmPassword, role: "Admin" },
           {
             withCredentials: true,
             headers: { "Content-Type": "application/json" },
@@ -34,7 +35,7 @@ const Login = () => {
           // setConfirmPassword("");
         });
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error?.response?.data?.message ?? error);
     }
   };
 
@@ -44,13 +45,10 @@ const Login = () => {
 
   return (
     <>
-      <div className="container form-component login-form">
-        <h2>Sign In</h2>
-        <p>Please Login To Continue</p>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat culpa
-          voluptas expedita itaque ex, totam ad quod error?
-        </p>
+      <section className="container form-component">
+        <img src="/logo.png" alt="logo" className="logo" />
+        <h1 className="form-title">WELCOME TO ZEECARE</h1>
+        <p>Only Admins Are Allowed To Access These Resources!</p>
         <form onSubmit={handleLogin}>
           <input
             type="text"
@@ -86,10 +84,10 @@ const Login = () => {
             </Link>
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit">Login</button>
+            <button type="submit" onClick={handleLogin} >Login</button>
           </div>
         </form>
-      </div>
+      </section>
     </>
   );
 };

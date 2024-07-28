@@ -10,6 +10,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { useNavigate } from "react-router-dom";
+import SERVER_URL from "../env";
+
 
 const Sidebar = () => {
   const [show, setShow] = useState(false);
@@ -18,7 +20,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     await axios
-      .get("https://api.dadrahospital.in/api/v1/user/admin/logout", {
+    .get(`${SERVER_URL}/api/v1/user/admin/logout`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -62,7 +64,7 @@ const Sidebar = () => {
         <div className="links">
           <TiHome onClick={gotoHomePage} />
           {/* <FaUserDoctor onClick={gotoDoctorsPage} /> */}
-          {/* <MdAddModerator onClick={gotoAddNewAdmin} /> */}
+          {/* <MdAddModerator onClick={AddNewOPD} /> */}
           {/* <IoPersonAddSharp onClick={gotoAddNewDoctor} /> */}
           {/* <AiFillMessage onClick={gotoMessagesPage} /> */}
           <RiLogoutBoxFill onClick={handleLogout} />
