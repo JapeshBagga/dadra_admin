@@ -24,7 +24,7 @@ const App = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `${{SERVER_URL}}/api/v1/user/admin/me`,
+          `${SERVER_URL}/api/v1/user/admin/me`,
           {
             withCredentials: true,
           }
