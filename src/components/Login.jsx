@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import SERVER_URL from "../env";
 
 const Login = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -14,13 +15,12 @@ const Login = () => {
   const navigateTo = useNavigate();
 
   const handleLogin = async (e) => {
-    console.log("🚀 ~ handleLogin ~ email, password:", email, password)
     e.preventDefault();
     try {
       await axios
         .post(
-          "https://seashell-app-qeo8e.ondigitalocean.app/api/v1/user/login",
-          { email, password, confirmPassword, role: "Admin" },
+          `${SERVER_URL}/api/v1/user/login`,
+          { email, password, confirmPassword: password, role: "Admin" },
           {
             withCredentials: true,
             headers: { "Content-Type": "application/json" },
