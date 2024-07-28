@@ -12,10 +12,9 @@ import { Context } from "../main";
 import { useNavigate } from "react-router-dom";
 import SERVER_URL from "../env";
 
-
 const Sidebar = () => {
+  const navigateTo = useNavigate();
   const [show, setShow] = useState(false);
-
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
   const handleLogout = async () => {
@@ -25,14 +24,12 @@ const Sidebar = () => {
       })
       .then((res) => {
         toast.success(res.data.message);
-        setIsAuthenticated(false);
+        window.location.reload();
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        toast.error(err?.response?.data.message);
       });
   };
-
-  const navigateTo = useNavigate();
 
   const gotoHomePage = () => {
     navigateTo("/");

@@ -28,7 +28,10 @@ const OpdForm = () => {
   });
 
   useEffect(() => {
-    const fetchOpdData = async () => {
+    fetchOpdData();
+  }, [patientId]);
+
+  const fetchOpdData = async () => {
       try {
         const response = await axios.get(`${SERVER_URL}/api/v1/opd/${patientId}`, {
           withCredentials: true,
@@ -57,9 +60,6 @@ const OpdForm = () => {
         console.error('Error fetching OPD data:', error);
       }
     };
-    fetchOpdData();
-  }, [patientId]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

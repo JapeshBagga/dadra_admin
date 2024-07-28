@@ -7,7 +7,7 @@ import SERVER_URL from "../env";
 
 const AddNewDoctor = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-
+const navigateTo = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,7 +20,7 @@ const AddNewDoctor = () => {
   const [docAvatar, setDocAvatar] = useState("");
   const [docAvatarPreview, setDocAvatarPreview] = useState("");
 
-  const navigateTo = useNavigate();
+  
 
   const departmentsArray = [
     "Pediatrics",
