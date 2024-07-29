@@ -7,7 +7,7 @@
   font-family: "Montserrat", sans-serif;
 }
 body {
-  background: #3939d9f2;
+  background: #375f4a;
 }
 .container {
   padding: 0 100px;
@@ -109,7 +109,20 @@ body {
   border-radius: 8px;
   font-size: 24px;
   margin-bottom: 30px;
-  background: linear-gradient(140deg, #9083d5, #271776ca);
+  background: linear-gradient(140deg, #4a8430, #375f4a);
+}
+.btn {
+  padding: 10px 35px;
+  color: #fff;
+  font-weight: 700;
+  width: fit-content;
+  border: none;
+  border-radius: 8px;
+  font-size: 24px;
+  margin-bottom: 30px;
+  background: linear-gradient(140deg, #4a8430, #375f4a);
+  margin-left: 60%;
+
 }
 .form-component .wrapper {
   display: flex;
@@ -169,7 +182,7 @@ body {
   display: flex;
   align-items: center;
   border-radius: 20px;
-  background: #b5b5ff;
+  background: #375f4a;
   padding: 20px 20px 0 10px;
 }
 .dashboard .banner:first-child .firstBox img {
@@ -185,22 +198,25 @@ body {
   font-size: 34px;
   margin-bottom: 12px;
 }
+.content{
+  color: #fff;
+}
 .dashboard .banner:first-child .firstBox .content div p {
   margin-right: 10px;
   font-size: 34px;
 }
 .dashboard .banner:first-child .firstBox .content div h5 {
-  color: #ff008d;
+  color: #fff;
 }
 .dashboard .banner:first-child .firstBox .content p {
   font-size: 16px;
 }
 .dashboard .banner:first-child .secondBox {
-  background: #3939d9f2;
+  background: #375f4a;
   color: #fff;
 }
 .dashboard .banner:first-child .thirdBox {
-  color: #ff008d;
+  color: #fff;
   background: #fff;
 }
 .dashboard .banner:first-child .secondBox,
@@ -244,7 +260,7 @@ body {
 .dashboard .banner table select {
   font-size: 20px;
   border: none;
-  width: 100%;
+  width: 65%;
   font-weight: 600;
 }
 .dashboard table td svg{
@@ -359,7 +375,7 @@ body {
 }
 .sidebar svg:hover {
   background: #fff;
-  color: #3939d9f2;
+  color: #375f4a;
   border-radius: 8px;
   transition: 0.3s;
   cursor: pointer;
@@ -378,7 +394,7 @@ body {
 
 @media (max-width: 1208px) {
   .sidebar {
-    background: #3939d9f2;
+    background: #375f4a;
     left: -100%;
     transition: 0.3s;
   }
@@ -392,7 +408,7 @@ body {
     top: 30px;
     left: 40px;
     font-size: 34px;
-    background: #3939d9f2;
+    background: #375f4a;
     color: #fff;
     height: 40px;
     width: 40px;
@@ -415,7 +431,7 @@ body {
 }
 
 .doctors h1 {
-  color: #3939d9f2;
+  color: #375f4a;
   margin-bottom: 30px;
   font-size: 2.3rem;
 }
@@ -466,7 +482,7 @@ body {
 }
 
 .messages h1 {
-  color: #3939d9f2;
+  color: #375f4a;
   margin-bottom: 30px;
   font-size: 2.3rem;
 }
@@ -553,7 +569,7 @@ body {
   border-radius: 8px;
   font-size: 24px;
   margin-bottom: 30px;
-  background: linear-gradient(140deg, #9083d5, #271776ca);
+  background: linear-gradient(140deg, #4a8430, #375f4a);
 }
 @media (max-width: 945px) {
   .add-doctor-div div .first-wrapper {
@@ -618,4 +634,197 @@ button {
 
 button:hover {
   background-color: #0056b3;
+}
+
+
+
+/* opd css */
+.opd-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.opd-card {
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 60%;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.patient-details {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.patient-info, .vitals {
+  width: 45%;
+}
+
+.patient-info p, .vitals p {
+  margin: 5px 0;
+}
+
+.investigation, .diagnosis, .complain, .medicines, .advice, .next-visit {
+  margin-top: 20px;
+  overflow: auto;
+}
+
+.medicines table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.medicines table, .medicines th, .medicines td {
+  border: 1px solid #ddd;
+}
+
+.medicines th, .medicines td {
+  padding: 8px;
+  text-align: left;
+}
+
+.medicines th {
+  background-color: #f2f2f2;
+}
+
+.medicines tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+.date {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 16px;
+}
+
+
+
+/* opd form */
+.opd-form {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.form-header h2 {
+  margin: 0;
+}
+
+.header-details {
+  text-align: right;
+}
+
+.prescription-id {
+  font-weight: bold;
+  margin: 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+label input,
+label select {
+  width: calc(100% - 20px);
+  padding: 5px;
+  margin-left: 10px;
+}
+
+.form-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.medicines-section {
+  margin-top: 20px;
+  border-top: 2px solid #ccc;
+  padding-top: 10px;
+}
+
+.medicine {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.add-medicine-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  margin: 10px 0;
+}
+
+.add-medicine-btn:hover {
+  background-color: #218838;
+}
+
+.submit-btn {
+  display: block;
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
+}
+
+.custom-link {
+  color: rgb(3, 102, 25);
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor:pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.custom-link:hover {
+  /* background-color: rgb(4, 94, 8); */
+  color: rgb(5, 154, 37);
 }

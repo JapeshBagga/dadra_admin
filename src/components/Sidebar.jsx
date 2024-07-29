@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { TiHome } from "react-icons/ti";
-import { RiLogoutBoxFill } from "react-icons/ri";
+import { RiLogoutBoxLine } from "react-icons/ri";
 import { AiFillMessage } from "react-icons/ai";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -64,7 +64,7 @@ const Sidebar = () => {
           {/* <MdAddModerator onClick={AddNewOPD} /> */}
           {/* <IoPersonAddSharp onClick={gotoAddNewDoctor} /> */}
           {/* <AiFillMessage onClick={gotoMessagesPage} /> */}
-          <RiLogoutBoxFill onClick={handleLogout} />
+          <RiLogoutBoxLine onClick={handleLogout} />
         </div>
       </nav>
       <div

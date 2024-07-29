@@ -53,8 +53,8 @@ const Dashboard = () => {
   }
   const navigateTo = useNavigate();
 
-  const AddNewOPD = (id) => {
-    navigateTo("/opd/"+id);
+  const NavigateToOPDs = (id) => {
+    navigateTo("/opds/" + id);
   };
 
   return (
@@ -66,14 +66,9 @@ const Dashboard = () => {
             <div className="content">
               <div>
                 <p>Hello,</p>
-                <h5>
-                  {admin &&
-                    `${admin.firstName} ${admin.lastName}`}{" "}
-                </h5>
+                <h5>{admin && `${admin.firstName} ${admin.lastName}`} </h5>
               </div>
-              <p>
-                Welcome to Dadra Hospital Admin Portal
-              </p>
+              <p>Welcome to Dadra Hospital Admin Portal</p>
             </div>
           </div>
           <div className="secondBox">
@@ -96,23 +91,27 @@ const Dashboard = () => {
                 <th>Phone</th>
                 <th>Age</th>
                 <th>problem</th>
-                <th>Status</th>
                 <th>Action</th>
-
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
               {appointments && appointments.length > 0
                 ? appointments.map((appointment) => (
-                  <tr key={appointment?._id}>
-                  <td>{`${moment(appointment?.createdAt).format('Do MMMM YY')}`}</td>
-                  {/* <td>{appointment?.appointment?_date.substring(0, 16)}</td> */}
-                  {/* <td>{`${appointment?.doctor.firstName} ${appointment?.doctor.lastName}`}</td> */}
-                  <td>{appointment?.name}</td>
-                  <td>{appointment?.email}</td>
-                  <td>{appointment?.phone}</td>
-                  <td>{appointment?.age}</td>
-                  <td>{appointment?.problem}</td>
+                    <tr key={appointment?._id}>
+                      <td>{`${moment(appointment?.createdAt).format(
+                        "Do MMMM YY"
+                      )}`}</td>
+                      {/* <td>{appointment?.appointment?_date.substring(0, 16)}</td> */}
+                      {/* <td>{`${appointment?.doctor.firstName} ${appointment?.doctor.lastName}`}</td> */}
+                      <td>{appointment?.name}</td>
+                      <td>{appointment?.email}</td>
+                      <td>{appointment?.phone}</td>
+                      <td>{appointment?.age}</td>
+                      <td>{appointment?.problem}</td>
+                      <td onClick={() => NavigateToOPDs(appointment?._id)}>
+                        <a className="custom-link">View OPDs</a>
+                      </td>
                       <td>
                         <select
                           className={
@@ -139,8 +138,6 @@ const Dashboard = () => {
                         </select>
                       </td>
                       {/* <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green"/> : <AiFillCloseCircle className="red"/>}</td> */}
-                      <td onClick={()=> AddNewOPD(appointment?._id)}>Add OPD</td>
-
                     </tr>
                   ))
                 : "No Appointments Found!"}

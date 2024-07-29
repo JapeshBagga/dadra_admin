@@ -12,6 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
 import AddNewOPD from "./components/AddNewOPD";
+import OPDs from "./components/opds";
+
 import SERVER_URL from "./env";
 
 import "./App.css";
@@ -49,7 +51,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/doctor/addnew" element={<AddNewDoctor />} />
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
-        <Route path="/opd/:patientId" element={<AddNewOPD />} />
+        <Route path="/opds/:patientId" element={<OPDs />} />
+        <Route path="/opd/addnew/:patientId" element={<AddNewOPD />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/doctors" element={<Doctors />} />
       </Routes>
