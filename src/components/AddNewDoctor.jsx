@@ -7,7 +7,7 @@ import SERVER_URL from "../env";
 
 const AddNewDoctor = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
-const navigateTo = useNavigate();
+  const navigateTo = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -19,8 +19,6 @@ const navigateTo = useNavigate();
   const [doctorDepartment, setDoctorDepartment] = useState("");
   const [docAvatar, setDocAvatar] = useState("");
   const [docAvatarPreview, setDocAvatarPreview] = useState("");
-
-  
 
   const departmentsArray = [
     "Pediatrics",
@@ -59,8 +57,8 @@ const navigateTo = useNavigate();
       formData.append("doctorDepartment", doctorDepartment);
       formData.append("docAvatar", docAvatar);
       await axios
-      .post(`${SERVER_URL}/api/v1/user/doctor/addnew`, formData, {
-        withCredentials: true,
+        .post(`${SERVER_URL}/api/v1/user/doctor/addnew`, formData, {
+          withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
         })
         .then((res) => {
@@ -87,7 +85,7 @@ const navigateTo = useNavigate();
   return (
     <section className="page">
       <section className="container add-doctor-form">
-        <img src="/logo.png" alt="logo" className="logo"/>
+        <img src="/logo.png" width="125px" alt="logo" className="logo" />
         <h1 className="form-title">REGISTER A NEW DOCTOR</h1>
         <form onSubmit={handleAddNewDoctor}>
           <div className="first-wrapper">

@@ -46,8 +46,8 @@ const Login = () => {
   return (
     <>
       <section className="container form-component">
-        <img src="/logo.png" alt="logo" className="logo" />
-        <h1 className="form-title">WELCOME TO ZEECARE</h1>
+        <img src="/logo.png" width="125px" alt="logo" className="logo" />
+        <h1 className="form-title">WELCOME TO DADRA HOSPITAL</h1>
         <p>Only Admins Are Allowed To Access These Resources!</p>
         <form onSubmit={handleLogin}>
           <input
@@ -75,16 +75,18 @@ const Login = () => {
               flexDirection: "row",
             }}
           >
-            <p style={{ marginBottom: 0 }}>Not Registered?</p>
-            <Link
+            <p style={{ marginBottom: 10 }}></p>
+            {/* <Link
               to={"/register"}
               style={{ textDecoration: "none", color: "#271776ca" }}
             >
               Register Now
-            </Link>
+            </Link> */}
           </div>
           <div style={{ justifyContent: "center", alignItems: "center" }}>
-            <button type="submit" onClick={handleLogin} >Login</button>
+            <button type="submit" onClick={handleLogin}>
+              Login
+            </button>
           </div>
         </form>
       </section>
