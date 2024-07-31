@@ -3,14 +3,24 @@ import { Context } from "../main";
 import { Navigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { GoCheckCircleFill } from "react-icons/go";
-import { AiFillCloseCircle } from "react-icons/ai";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import SERVER_URL from "../env";
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [appointmentsPerPage] = useState(5);
+  const { patient, setPatient } = useContext(Context);
+
+  useEffect(() => {
+    setPatient({
+      name: "",
+      address: "",
+      age: null,
+    });
+  }, [setPatient]);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -29,6 +39,7 @@ const Dashboard = () => {
 
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
+      if (!admin?.canEdit) return toast.error("Restricted Access");
       const { data } = await axios.put(
         `${SERVER_URL}/api/v1/appointment/update/${appointmentId}`,
         { status },
@@ -53,9 +64,29 @@ const Dashboard = () => {
   }
   const navigateTo = useNavigate();
 
-  const NavigateToOPDs = (id) => {
+  const NavigateToOPDs = (id, data) => {
+    setPatient({ ...data });
     navigateTo("/opds/" + id);
   };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredAppointments = appointments.filter((appointment) =>
+    appointment.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  // Get current appointments
+  const indexOfLastAppointment = currentPage * appointmentsPerPage;
+  const indexOfFirstAppointment = indexOfLastAppointment - appointmentsPerPage;
+  const currentAppointments = filteredAppointments.slice(
+    indexOfFirstAppointment,
+    indexOfLastAppointment
+  );
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <>
@@ -75,10 +106,16 @@ const Dashboard = () => {
             <p>Total Appointments</p>
             <h3>{appointments?.length ?? 0}</h3>
           </div>
-          {/* <div className="thirdBox">
-            <p>Registered Doctors</p>
-            <h3>10</h3>
-          </div> */}
+        </div>
+        <div className="actions" style={{ marginLeft: "60%" }}>
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Search by patient name"
+            value={searchQuery}
+            onChange={handleSearchChange}
+            style={{ marginBottom: "-1%" }}
+          />
         </div>
         <div className="banner">
           <h5>Appointments</h5>
@@ -90,26 +127,32 @@ const Dashboard = () => {
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Age</th>
-                <th>problem</th>
+                <th>Problem</th>
                 <th>Action</th>
                 <th>Status</th>
               </tr>
             </thead>
             <tbody>
-              {appointments && appointments.length > 0
-                ? appointments.map((appointment) => (
+              {currentAppointments && currentAppointments.length > 0
+                ? currentAppointments.map((appointment) => (
                     <tr key={appointment?._id}>
                       <td>{`${moment(appointment?.createdAt).format(
                         "Do MMMM YY"
                       )}`}</td>
-                      {/* <td>{appointment?.appointment?_date.substring(0, 16)}</td> */}
-                      {/* <td>{`${appointment?.doctor.firstName} ${appointment?.doctor.lastName}`}</td> */}
-                      <td>{appointment?.name}</td>
-                      <td>{appointment?.email}</td>
-                      <td>{appointment?.phone}</td>
-                      <td>{appointment?.age}</td>
-                      <td>{appointment?.problem}</td>
-                      <td onClick={() => NavigateToOPDs(appointment?._id)}>
+                      <td>{appointment?.name ?? "-"}</td>
+                      <td>
+                        {appointment?.email.trim() ? appointment?.email : "-"}
+                      </td>
+                      <td>{appointment?.phone ?? "-"}</td>
+                      <td>
+                        {appointment?.age.trim() ? appointment?.age : "-"}
+                      </td>
+                      <td>{appointment?.problem ?? "-"}</td>
+                      <td
+                        onClick={() =>
+                          NavigateToOPDs(appointment?._id, appointment)
+                        }
+                      >
                         <a className="custom-link">View OPDs</a>
                       </td>
                       <td>
@@ -137,17 +180,55 @@ const Dashboard = () => {
                           </option>
                         </select>
                       </td>
-                      {/* <td>{appointment.hasVisited === true ? <GoCheckCircleFill className="green"/> : <AiFillCloseCircle className="red"/>}</td> */}
                     </tr>
                   ))
                 : "No Appointments Found!"}
             </tbody>
           </table>
-
-          {}
+          <Pagination
+            appointmentsPerPage={appointmentsPerPage}
+            totalAppointments={filteredAppointments.length}
+            paginate={paginate}
+            currentPage={currentPage}
+          />
         </div>
       </section>
     </>
+  );
+};
+
+const Pagination = ({
+  appointmentsPerPage,
+  totalAppointments,
+  paginate,
+  currentPage,
+}) => {
+  const pageNumbers = [];
+
+  for (
+    let i = 1;
+    i <= Math.ceil(totalAppointments / appointmentsPerPage);
+    i++
+  ) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <nav>
+      <ul className="pagination">
+        {pageNumbers.map((number) => (
+          <li key={number} className="page-item">
+            <a
+              onClick={() => paginate(number)}
+              href="#"
+              className={`custom-link ${number == currentPage && "active"}`}
+            >
+              {number}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 };
 

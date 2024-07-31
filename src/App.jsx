@@ -13,8 +13,10 @@ import Sidebar from "./components/Sidebar";
 import AddNewAdmin from "./components/AddNewAdmin";
 import AddNewOPD from "./components/AddNewOPD";
 import OPDs from "./components/opds";
-
+import Pharmacy from "./components/Pharmacy";
+import AddNewMedicine from "./components/AddNewMedicine";
 import SERVER_URL from "./env";
+import Register from "./components/register";
 
 import "./App.css";
 
@@ -25,18 +27,13 @@ const App = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          `${SERVER_URL}/api/v1/user/admin/me`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${SERVER_URL}/api/v1/user/admin/me`, {
+          withCredentials: true,
+        });
         setIsAuthenticated(true);
-        setAdmin(response.data.user);
         setAdmin(response.data.user);
       } catch (error) {
         setIsAuthenticated(false);
-        setAdmin({});
         setAdmin({});
       }
     };
@@ -49,12 +46,19 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+
         <Route path="/doctor/addnew" element={<AddNewDoctor />} />
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
         <Route path="/opds/:patientId" element={<OPDs />} />
         <Route path="/opd/addnew/:patientId" element={<AddNewOPD />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/doctors" element={<Doctors />} />
+        <Route path="/pharmacy" element={<Pharmacy />} />
+        <Route
+          path="/pharmacy/addnew/:medicineId?"
+          element={<AddNewMedicine />}
+        />
       </Routes>
       <ToastContainer position="top-center" />
     </Router>

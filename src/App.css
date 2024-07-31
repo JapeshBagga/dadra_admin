@@ -119,8 +119,11 @@ body {
   border: none;
   border-radius: 8px;
   font-size: 24px;
-  margin-bottom: 30px;
+  /* margin-bottom: 30px; */
   background: linear-gradient(140deg, #4a8430, #375f4a);
+  overflow: unset;
+}
+.ml60{
   margin-left: 60%;
 
 }
@@ -215,6 +218,9 @@ body {
   background: #375f4a;
   color: #fff;
 }
+.Toastify__toast-body > div:last-child{
+  width:1000px
+}
 .dashboard .banner:first-child .thirdBox {
   color: #fff;
   background: #fff;
@@ -260,7 +266,7 @@ body {
 .dashboard .banner table select {
   font-size: 20px;
   border: none;
-  width: 65%;
+  /* width: 65%; */
   font-weight: 600;
 }
 .dashboard table td svg{
@@ -822,9 +828,125 @@ label select {
   border-radius: 4px;
   cursor:pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden;
 }
 
 .custom-link:hover {
   /* background-color: rgb(4, 94, 8); */
   color: rgb(5, 154, 37);
+  text-decoration: underline;
+
 }
+
+
+/* medicine form */
+.medicine-form {
+  width: 60%;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.medicine-form h2 {
+  text-align: center;
+}
+
+.medicine-form label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.medicine-form input {
+  /* width: 100%; */
+  padding: 8px;
+  margin-top: 5px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.medicine-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.medicine-form button:hover {
+  background-color: #0056b3;
+}
+
+
+/* medicne list */
+.medicine-list {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.medicine-list h2 {
+  text-align: center;
+}
+
+.medicine-list table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.medicine-list th,
+.medicine-list td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ccc;
+}
+
+.medicine-list th {
+  background-color: #007bff;
+  color: white;
+}
+
+
+/* //search field */
+.actions {
+  display: inline-block;
+  overflow: unset;
+}
+
+.search-input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  margin-left: 70%;
+}
+
+/* pagination */
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  list-style: none;
+}
+
+.page-item {
+  margin: 0 5px;
+  overflow: unset;
+
+}
+
+.page-link:hover {
+  text-decoration: underline;
+}
+
+.custom-link.active{
+border: solid rgb(3, 102, 25) 1px;
+border-radius: 50px;
+}    

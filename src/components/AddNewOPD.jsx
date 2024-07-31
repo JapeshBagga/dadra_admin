@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { Context } from "../main";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import SERVER_URL from "../env";
 
 const OpdForm = () => {
   const { patientId } = useParams();
+  const { patient, setPatient } = useContext(Context);
+  const navigateTo = useNavigate();
   const [formData, setFormData] = useState({
     opdId: "",
     bp: "",
     rr: "",
     temperature: "",
     diagonsis: "",
+    investigation: "",
+    complain: "",
+    spo2: "",
+    rbs: "",
     medicines: [
       {
         category: "",
@@ -108,6 +115,7 @@ const OpdForm = () => {
         headers: { "Content-Type": "application/json" },
       });
       alert("Form submitted successfully");
+      navigateTo("/opds/" + id);
     } catch (error) {
       console.error("Error submitting form:", error);
     }
@@ -131,11 +139,61 @@ const OpdForm = () => {
             />
           </label>
           <label>
+            Patient Name:
+            <input
+              type="text"
+              name="name"
+              value={patient.name}
+              // onChange={handleChange}
+              readOnly
+            />
+          </label>
+          <label>
+            Age:
+            <input
+              type="text"
+              name="age"
+              value={patient.age}
+              // onChange={handleChange}
+              readOnly
+            />
+          </label>
+          <label>
+            Address:
+            <input
+              type="text"
+              name="addr"
+              value={patient.address}
+              // onChange={handleChange}
+              readOnly
+            />
+          </label>
+          <label>
+            Phone:
+            <input
+              type="text"
+              name="phone"
+              value={patient.phone}
+              // onChange={handleChange}
+              readOnly
+            />
+          </label>
+          <label>
             BP:
             <input
               type="text"
               name="bp"
               value={formData.bp}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label>
+            SPO2:
+            <input
+              type="text"
+              name="spo2"
+              value={formData.spo2}
               onChange={handleChange}
               required
             />
@@ -150,6 +208,16 @@ const OpdForm = () => {
             />
           </label>
           <label>
+            RBS:
+            <input
+              type="text"
+              name="rbs"
+              value={formData.rbs}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label>
             Temperature:
             <input
               type="text"
@@ -160,11 +228,31 @@ const OpdForm = () => {
             />
           </label>
           <label>
+            Investigation:
+            <input
+              type="text"
+              name="investigation"
+              value={formData.investigation}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label>
             Diagnosis:
             <input
               type="text"
               name="diagonsis"
               value={formData.diagonsis}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label>
+            Complain:
+            <input
+              type="text"
+              name="complain"
+              value={formData.complain}
               onChange={handleChange}
               required
             />

@@ -19,7 +19,7 @@ const Sidebar = () => {
 
   const handleLogout = async () => {
     await axios
-    .get(`${SERVER_URL}/api/v1/user/admin/logout`, {
+      .get(`${SERVER_URL}/api/v1/user/admin/logout`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -52,6 +52,11 @@ const Sidebar = () => {
     setShow(!show);
   };
 
+  const goToPharmacy = () => {
+    navigateTo("/pharmacy");
+    setShow(!show);
+  };
+
   return (
     <>
       <nav
@@ -64,6 +69,7 @@ const Sidebar = () => {
           {/* <MdAddModerator onClick={AddNewOPD} /> */}
           {/* <IoPersonAddSharp onClick={gotoAddNewDoctor} /> */}
           {/* <AiFillMessage onClick={gotoMessagesPage} /> */}
+          <AiFillMessage onClick={goToPharmacy} />
           <RiLogoutBoxLine onClick={handleLogout} />
         </div>
       </nav>
