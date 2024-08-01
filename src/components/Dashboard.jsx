@@ -124,6 +124,7 @@ const Dashboard = () => {
               <tr>
                 <th>Date</th>
                 <th>Patient</th>
+                <th>Address</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Age</th>
@@ -140,6 +141,13 @@ const Dashboard = () => {
                         "Do MMMM YY"
                       )}`}</td>
                       <td>{appointment?.name ?? "-"}</td>
+
+                      <td>
+                        {" "}
+                        {appointment?.address?.trim()
+                          ? appointment?.address
+                          : "-"}
+                      </td>
                       <td>
                         {appointment?.email.trim() ? appointment?.email : "-"}
                       </td>
