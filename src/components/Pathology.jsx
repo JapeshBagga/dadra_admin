@@ -7,53 +7,52 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import SERVER_URL from "../env";
 
-const Pharmacy = () => {
+const Pathology = () => {
   const navigateTo = useNavigate();
-  const [medicines, setMedicines] = useState([]);
+  const [tests, settests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [medicinesPerPage] = useState(5);
+  const [testsPerPage] = useState(5);
   const { isAuthenticated, admin } = useContext(Context);
 
   useEffect(() => {
-    const fetchMedicines = async () => {
+    const fetchtests = async () => {
       try {
-        const { data } = await axios.get(`${SERVER_URL}/api/v1/pharmacy/all`, {
+        const { data } = await axios.get(`${SERVER_URL}/api/v1/pathology/all`, {
           withCredentials: true,
         });
-        setMedicines(data);
+        settests(data ?? []);
       } catch (error) {
         console.error("Error:", error);
       }
     };
 
-    fetchMedicines();
+    fetchtests();
   }, []);
 
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
 
-  const NavigateToAddMedicine = (id) => {
+  const NavigateToAddTest = (id) => {
     if (!admin.canEdit) return toast.error("Restricted Access");
-    id ? navigateTo("/pharmacy/addNew/" + id) : navigateTo("/pharmacy/addnew/");
+    id
+      ? navigateTo("/pathology/addnew/" + id)
+      : navigateTo("/pathology/addnew/");
   };
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
-  const filteredMedicines = medicines.filter((medicine) =>
-    medicine.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredtests = tests?.filter((test) =>
+    test.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Get current medicines
-  const indexOfLastMedicine = currentPage * medicinesPerPage;
-  const indexOfFirstMedicine = indexOfLastMedicine - medicinesPerPage;
-  const currentMedicines = filteredMedicines.slice(
-    indexOfFirstMedicine,
-    indexOfLastMedicine
-  );
+  // Get current tests
+  const indexOfLasttest = currentPage * testsPerPage;
+  const indexOfFirsttest = indexOfLasttest - testsPerPage;
+  const currenttests = filteredtests?.slice(indexOfFirsttest, indexOfLasttest);
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -73,14 +72,14 @@ const Pharmacy = () => {
             </div>
           </div>
           <div className="secondBox">
-            <p>Total medicines</p>
-            <h3>{medicines?.length ?? 0}</h3>
+            <p>Total Tests</p>
+            <h3>{tests?.length ?? 0}</h3>
           </div>
         </div>
 
         <div className="actions">
-          <button className="btn" onClick={() => NavigateToAddMedicine()}>
-            Add Medicine
+          <button className="btn" onClick={() => NavigateToAddtest()}>
+            Add Lab Test
           </button>
           <input
             type="text"
@@ -92,52 +91,53 @@ const Pharmacy = () => {
         </div>
 
         <div className="banner">
-          <h5>Pharmacy</h5>
+          <h5>Pathology</h5>
           <table>
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Category</th>
-                <th>Quantity</th>
-                <th>Expiry Date</th>
-                <th>MFD Date</th>
-                <th>FSSAI No.</th>
+                <th>Case ID</th>
+                {/* <th>Lab</th> */}
+                {/* <th>Quantity</th> */}
+                <th>Sample Collected Date</th>
+                <th>Expected Completion Date</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              {currentMedicines && currentMedicines.length > 0
-                ? currentMedicines.map((medicine) => (
-                    <tr key={medicine?._id}>
-                      <td>{medicine.name ?? "-"}</td>
-                      <td>{medicine.category ?? "-"}</td>
-                      <td>{medicine.quantity ?? "-"}</td>
+              {currenttests && currenttests.length > 0
+                ? currenttests.map((test) => (
+                    <tr key={test?._id}>
+                      <td>{test.name ?? "-"}</td>
+                      <td>{test.case_id ?? "-"}</td>
                       <td>
-                        {medicine?.expiryDate
-                          ? `${moment(medicine?.expiryDate).format(
+                        {test?.sample_collected_date
+                          ? `${moment(test?.sample_collected_date).format(
                               "Do MMMM YY"
                             )}`
                           : "-"}
                       </td>
                       <td>
-                        {medicine?.mfdDate
-                          ? `${moment(medicine?.mfdDate).format("Do MMMM YY")}`
+                        {test?.expected_date
+                          ? `${moment(test?.expected_date).format(
+                              "Do MMMM YY"
+                            )}`
                           : "-"}
                       </td>
-                      <td>
-                        {medicine?.fssaiNo.trim() ? medicine?.fssaiNo : "-"}
-                      </td>
-                      <td onClick={() => NavigateToAddMedicine(medicine?._id)}>
+                      {/*  <td>
+                       {test?.fssaiNo.trim() ? test?.fssaiNo : "-"}
+                      </td> */}
+                      <td onClick={() => NavigateToAddTest(test?._id)}>
                         <a className="custom-link">Edit</a>
                       </td>
                     </tr>
                   ))
-                : "No medicines Found!"}
+                : "No tests Found!"}
             </tbody>
           </table>
           <Pagination
-            itemsPerPage={medicinesPerPage}
-            totalItems={filteredMedicines.length}
+            itemsPerPage={testsPerPage}
+            totalItems={filteredtests.length}
             paginate={paginate}
             currentPage={currentPage}
           />
@@ -173,4 +173,4 @@ const Pagination = ({ itemsPerPage, totalItems, paginate, currentPage }) => {
   );
 };
 
-export default Pharmacy;
+export default Pathology;

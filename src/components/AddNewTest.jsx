@@ -5,41 +5,37 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const OpdForm = () => {
-  const { medicineId } = useParams();
+  const { testId } = useParams();
   const navigateTo = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
-    category: "",
-    quantity: "",
-    expiryDate: "",
-    mfdDate: "",
-    fssaiNo: "",
+    case_id: "",
+    sample_collected_date: "",
+    expected_date: "",
   });
 
   useEffect(() => {
-    if (medicineId) {
-      const fetchMedicine = async () => {
+    if (testId) {
+      const fetchTest = async () => {
         try {
           const { data } = await axios.get(
-            `${SERVER_URL}/api/v1/pharmacy/${medicineId}`,
+            `${SERVER_URL}/api/v1/pathology/${testId}`,
             { withCredentials: true }
           );
           setFormData({
             name: data.name,
-            category: data.category,
-            quantity: data.quantity,
-            expiryDate: data.expiryDate?.split("T")[0],
-            mfdDate: data.mfdDate?.split("T")[0],
-            fssaiNo: data.fssaiNo,
+            case_id: data.case_id,
+            sample_collected_date: data.sample_collected_date?.split("T")[0],
+            expected_date: data.expected_date?.split("T")[0],
           });
         } catch (error) {
           toast.error("Error:", error);
         }
       };
 
-      fetchMedicine();
+      fetchTest();
     }
-  }, [medicineId]);
+  }, [testId]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,10 +44,10 @@ const OpdForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const method = medicineId ? "PUT" : "POST";
-      const url = medicineId
-        ? `${SERVER_URL}/api/v1/pharmacy/${medicineId}`
-        : `${SERVER_URL}/api/v1/pharmacy/add`;
+      const method = testId ? "PUT" : "POST";
+      const url = testId
+        ? `${SERVER_URL}/api/v1/pathology/${testId}`
+        : `${SERVER_URL}/api/v1/pathology/add`;
       const response = await axios({
         method,
         url,
@@ -60,10 +56,8 @@ const OpdForm = () => {
       });
 
       if (response.status === 200 || response.status === 201) {
-        toast.success(
-          `Medicine ${medicineId ? "updated" : "added"} successfully`
-        );
-        navigateTo("/pharmacy");
+        toast.success(`Test ${testId ? "updated" : "added"} successfully`);
+        navigateTo("/pathology");
       } else {
         toast.error(`Error: Something went wrong: ${errorData.error}`);
       }
@@ -83,9 +77,9 @@ const OpdForm = () => {
     <section className="page">
       <section className="container form-component add-admin-form">
         <img src="/logo.png" width="125px" alt="logo" className="logo" />
-        <h1 className="form-title">Dadra Pharmacy</h1>
+        <h1 className="form-title">Dadra Laboratory</h1>
         <form className="medicine-form" onSubmit={handleSubmit}>
-          <h2>Add Medicine</h2>
+          <h2>Add Test</h2>
           <label>
             Name:
             <input
@@ -97,11 +91,11 @@ const OpdForm = () => {
             />
           </label>
           <label>
-            Category:
+            Case ID:
             <input
               type="text"
-              name="category"
-              value={formData.category}
+              name="case_id"
+              value={formData.case_id}
               onChange={handleChange}
             />
           </label>
@@ -112,10 +106,11 @@ const OpdForm = () => {
               name="lotSize"
               value={formData.lotSize}
               onChange={handleChange}
-              
+              <th>Sample Collected Date</th>
+                <th>Expected Completion Date</th>
             />
           </label> */}
-          <label>
+          {/* <label>
             Quantity:
             <input
               type="number"
@@ -125,35 +120,27 @@ const OpdForm = () => {
               min={0}
               required
             />
-          </label>
+          </label> */}
           <label>
-            Expiry Date:
+            Sample Collected Date:
             <input
               type="date"
-              name="expiryDate"
-              value={formData.expiryDate}
+              name="sample_collected_date"
+              value={formData.sample_collected_date}
               onChange={handleChange}
             />
           </label>
           <label>
-            MFD Date:
+            Expected Completion Date:
             <input
               type="date"
-              name="mfdDate"
-              value={formData.mfdDate}
+              name="expected_date"
+              value={formData.expected_date}
               onChange={handleChange}
             />
           </label>
-          <label>
-            FSSAI No.:
-            <input
-              type="text"
-              name="fssaiNo"
-              value={formData.fssaiNo}
-              onChange={handleChange}
-            />
-          </label>
-          <button type="submit">Add Medicine</button>
+
+          <button type="submit">Add Test</button>
         </form>
       </section>
     </section>

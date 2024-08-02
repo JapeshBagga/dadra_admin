@@ -29,9 +29,21 @@ const AppWrapper = () => {
     </Context.Provider>
   );
 };
+let container = null;
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
-    <AppWrapper />
-  </React.StrictMode>
-);
+document.addEventListener("DOMContentLoaded", function (event) {
+  if (!container) {
+    container = document.getElementById("root");
+    const root = ReactDOM.createRoot(container);
+    root.render(
+      <React.StrictMode>
+        <AppWrapper />
+      </React.StrictMode>
+    );
+  }
+});
+// ReactDOM.createRoot(document.getElementById("root")).render(
+//   <React.StrictMode>
+//     <AppWrapper />
+//   </React.StrictMode>
+// );

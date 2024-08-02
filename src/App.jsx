@@ -14,7 +14,9 @@ import AddNewAdmin from "./components/AddNewAdmin";
 import AddNewOPD from "./components/AddNewOPD";
 import OPDs from "./components/opds";
 import Pharmacy from "./components/Pharmacy";
+import Pathology from "./components/Pathology";
 import AddNewMedicine from "./components/AddNewMedicine";
+import AddNewTest from "./components/AddNewTest";
 import SERVER_URL from "./env";
 import Register from "./components/register";
 
@@ -55,6 +57,8 @@ const App = () => {
         <Route path="/messages" element={<Messages />} />
         <Route path="/doctors" element={<Doctors />} />
         <Route path="/pharmacy" element={<Pharmacy />} />
+        <Route path="/pathology" element={<Pathology />} />
+        <Route path="/pathology/addnew/:testId?" element={<AddNewTest />} />
         <Route
           path="/pharmacy/addnew/:medicineId?"
           element={<AddNewMedicine />}

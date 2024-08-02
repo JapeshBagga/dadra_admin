@@ -2,10 +2,12 @@ import React, { useContext, useState } from "react";
 import { TiHome } from "react-icons/ti";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { AiFillMessage } from "react-icons/ai";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { GiHamburgerMenu, GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdAddModerator } from "react-icons/md";
 import { IoPersonAddSharp } from "react-icons/io5";
+import { BiScan } from "react-icons/bi";
+
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
@@ -56,6 +58,10 @@ const Sidebar = () => {
     navigateTo("/pharmacy");
     setShow(!show);
   };
+  const goToPathology = () => {
+    navigateTo("/pathology");
+    setShow(!show);
+  };
 
   return (
     <>
@@ -69,7 +75,8 @@ const Sidebar = () => {
           {/* <MdAddModerator onClick={AddNewOPD} /> */}
           {/* <IoPersonAddSharp onClick={gotoAddNewDoctor} /> */}
           {/* <AiFillMessage onClick={gotoMessagesPage} /> */}
-          <AiFillMessage onClick={goToPharmacy} />
+          <GiMedicines onClick={goToPharmacy} />
+          <BiScan onClick={goToPathology} />
           <RiLogoutBoxLine onClick={handleLogout} />
         </div>
       </nav>
