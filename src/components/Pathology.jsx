@@ -78,7 +78,7 @@ const Pathology = () => {
         </div>
 
         <div className="actions">
-          <button className="btn" onClick={() => NavigateToAddtest()}>
+          <button className="btn" onClick={() => NavigateToAddTest()}>
             Add Lab Test
           </button>
           <input
@@ -97,7 +97,7 @@ const Pathology = () => {
               <tr>
                 <th>Name</th>
                 <th>Case ID</th>
-                {/* <th>Lab</th> */}
+                <th>Patient Name</th>
                 {/* <th>Quantity</th> */}
                 <th>Sample Collected Date</th>
                 <th>Expected Completion Date</th>
@@ -110,6 +110,7 @@ const Pathology = () => {
                     <tr key={test?._id}>
                       <td>{test.name ?? "-"}</td>
                       <td>{test.case_id ?? "-"}</td>
+                      <td>{test.patientName ?? "-"}</td>
                       <td>
                         {test?.sample_collected_date
                           ? `${moment(test?.sample_collected_date).format(

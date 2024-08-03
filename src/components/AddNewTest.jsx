@@ -9,6 +9,7 @@ const OpdForm = () => {
   const navigateTo = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
+    patientName: "",
     case_id: "",
     sample_collected_date: "",
     expected_date: "",
@@ -96,6 +97,15 @@ const OpdForm = () => {
               type="text"
               name="case_id"
               value={formData.case_id}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Patient Name
+            <input
+              type="text"
+              name="patientName"
+              value={formData.patientName}
               onChange={handleChange}
             />
           </label>
