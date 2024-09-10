@@ -5,6 +5,8 @@ import { Context } from "../main";
 import { useNavigate, Navigate, useParams } from "react-router-dom";
 import SERVER_URL from "../env";
 import moment from "moment";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const OPDs = () => {
   const { patientId } = useParams();
@@ -39,6 +41,24 @@ const OPDs = () => {
     navigateTo("/opd/addnew/" + patientId);
   };
 
+  const downloadPDF = async (opdId) => {
+    const element = document.getElementById(`opd-card-${opdId}`);
+    const button = element.querySelector("button");
+    button.style.display = "none"; // Hide the button
+
+    const canvas = await html2canvas(element, { scale: 2 }); // Increase scale for better quality
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "px",
+      format: [canvas.width, canvas.height]
+    });
+    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+    pdf.save(`opd-${opdId}.pdf`);
+
+    button.style.display = "block"; // Show the button again
+  };
+
   return (
     <section className="page messages">
       <h1>OPDs</h1>
@@ -46,14 +66,12 @@ const OPDs = () => {
         <div className="opd-container">
           {opds && opds.length > 0 ? (
             opds.map((opd) => (
-              <div className="opd-card" key={opd.opdId}>
-                <div className="header">
-                  <h1>Dadra Hospital</h1>
-                  <p>Prescription DHOP1758</p>
-                  <p className="date">
-                    <strong>Date:</strong>{" "}
-                    {`${moment(opd?.createdAt).format("Do MMMM YY hh:mm:ss")}`}
-                  </p>
+              <div className="opd-card " id={`opd-card-${opd.opdId}`} key={opd.opdId}>
+                <div className="header-opd">
+                  <span className="">
+                    <strong>Date:{" "}</strong>
+                    {`${moment(opd?.createdAt).format("Do MMMM YY")}`}
+                  </span>
                 </div>
                 <div className="patient-details">
                   <div className="patient-info">
@@ -89,7 +107,6 @@ const OPDs = () => {
                     <p>
                       <strong>Phone:</strong> {opd.patientId.phone}
                     </p>
-                    {/* <p><strong>Consultant Doctor:</strong> {opd.consultantDoctor}</p> */}
                   </div>
                 </div>
                 <div className="investigation">
@@ -138,10 +155,7 @@ const OPDs = () => {
                   <h4>Advice:</h4>
                   <p>{opd.advice}</p>
                 </div>
-                {/* <div className="next-visit">
-                  <h4>Next Visit:</h4>
-                  <p>{opd.nextVisit}</p>
-                </div> */}
+                <button onClick={() => downloadPDF(opd.opdId)}>Download PDF</button>
               </div>
             ))
           ) : (
