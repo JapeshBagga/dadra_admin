@@ -88,7 +88,7 @@ const BillingForm = () => {
       item.name,
       item.quantity,
       item.price,
-      // (item.price * item.quantity).toFixed(2),
+      (item.price * item.quantity).toFixed(2),
     ]);
 
     // Add title and table to PDF
