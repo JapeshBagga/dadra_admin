@@ -11,6 +11,7 @@ const OpdForm = () => {
     name: "",
     patientName: "",
     case_id: "",
+    price: "",
     sample_collected_date: "",
     expected_date: "",
   });
@@ -106,6 +107,15 @@ const OpdForm = () => {
               type="text"
               name="patientName"
               value={formData.patientName}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+           Price
+            <input
+              type="text"
+              name="price"
+              value={formData.price}
               onChange={handleChange}
             />
           </label>

@@ -14,6 +14,7 @@ import AddNewAdmin from "./components/AddNewAdmin";
 import AddNewOPD from "./components/AddNewOPD";
 import OPDs from "./components/opds";
 import Pharmacy from "./components/Pharmacy";
+import BillingForm from "./components/Billing";
 import Pathology from "./components/Pathology";
 import AddNewMedicine from "./components/AddNewMedicine";
 import AddNewTest from "./components/AddNewTest";
@@ -58,6 +59,7 @@ const App = () => {
         <Route path="/doctors" element={<Doctors />} />
         <Route path="/pharmacy" element={<Pharmacy />} />
         <Route path="/pathology" element={<Pathology />} />
+        <Route path="/billing" element={<BillingForm />} />
         <Route path="/pathology/addnew/:testId?" element={<AddNewTest />} />
         <Route
           path="/pharmacy/addnew/:medicineId?"

@@ -97,6 +97,7 @@ const Pharmacy = () => {
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Price</th>
                 <th>Category</th>
                 <th>Quantity</th>
                 <th>Expiry Date</th>
@@ -110,6 +111,9 @@ const Pharmacy = () => {
                 ? currentMedicines.map((medicine) => (
                     <tr key={medicine?._id}>
                       <td>{medicine.name ?? "-"}</td>
+                      <td>
+                        {medicine?.price}
+                      </td>
                       <td>{medicine.category ?? "-"}</td>
                       <td>{medicine.quantity ?? "-"}</td>
                       <td>

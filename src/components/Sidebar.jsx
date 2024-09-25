@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { TiHome } from "react-icons/ti";
-import { RiLogoutBoxLine } from "react-icons/ri";
+import { RiLogoutBoxLine, RiBillLine } from "react-icons/ri";
 import { AiFillMessage } from "react-icons/ai";
 import { GiHamburgerMenu, GiMedicines } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
@@ -62,6 +62,10 @@ const Sidebar = () => {
     navigateTo("/pathology");
     setShow(!show);
   };
+  const gotoBillingPage = () => {
+    navigateTo("/billing");
+    setShow(!show);
+  };
 
   return (
     <>
@@ -74,10 +78,10 @@ const Sidebar = () => {
           {/* <FaUserDoctor onClick={gotoDoctorsPage} /> */}
           {/* <MdAddModerator onClick={AddNewOPD} /> */}
           {/* <IoPersonAddSharp onClick={gotoAddNewDoctor} /> */}
-          {/* <AiFillMessage onClick={gotoMessagesPage} /> */}
+          <RiBillLine onClick={gotoBillingPage} />
           <GiMedicines onClick={goToPharmacy} />
           <BiScan onClick={goToPathology} />
-          <RiLogoutBoxLine onClick={handleLogout} />
+          <RiLogoutBoxLine onClick={handleLogout} /> 
         </div>
       </nav>
       <div

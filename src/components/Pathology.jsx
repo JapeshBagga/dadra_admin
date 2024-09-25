@@ -101,6 +101,7 @@ const Pathology = () => {
                 {/* <th>Quantity</th> */}
                 <th>Sample Collected Date</th>
                 <th>Expected Completion Date</th>
+                <th>Price</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -125,6 +126,7 @@ const Pathology = () => {
                             )}`
                           : "-"}
                       </td>
+                      <td>{test.price}</td>
                       {/*  <td>
                        {test?.fssaiNo.trim() ? test?.fssaiNo : "-"}
                       </td> */}
