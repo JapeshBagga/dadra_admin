@@ -6,7 +6,7 @@ import SERVER_URL from "../env";
 import { jsPDFConstructor, jsPDFDocument } from "jspdf-autotable";
 
 const BillingForm = () => {
-  const [portal, setPortal] = useState("pharmacy"); // default portal
+  const [portal, setPortal] = useState("Pharmacy"); // default portal
   const [items, setItems] = useState<Item[]>([]); // items fetched from the API
   const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]); // items user selected with quantity
   const [total, setTotal] = useState(0);
@@ -78,32 +78,82 @@ const BillingForm = () => {
     setTotal(totalAmount);
   };
 
-  // Generate PDF for the bill
-  const generatePDF = () => {
-    const doc:jsPDFConstructor = new jsPDF();
+    // Generate PDF for the bill
+    const generatePDF = async (): Promise<void> => {
+      try{
+        const doc:jsPDFConstructor = new jsPDF();
+    
+        // Add the header image to the PDF (position: x: 0, y: 0)
+        const headerImg = await getBase64Image('/Dadra_Letter Head-fotor.png'); // Use the relative path from the public folder
+        
+        // Define the maximum width and height of the image
+        const maxWidth = 910; // Page width in jsPDF (for A4 size)
+        const maxHeight = 30;  // You can adjust this for the height you want
+    
+        // Get image dimensions
+        const img = new Image();
+        img.src = headerImg;
+        img.onload = () => {
+          const aspectRatio = img.width / img.height;
+          let imageWidth = maxWidth;
+          let imageHeight = maxWidth / aspectRatio;
+    
+          // If height exceeds the maximum allowed height, scale down proportionally
+          if (imageHeight > maxHeight) {
+            imageHeight = maxHeight;
+            imageWidth = maxHeight * aspectRatio;
+          }
+    
+          // Add the image to the PDF with correct dimensions
+          doc.addImage(headerImg, 'PNG', 0, 0, 210, 80); // Adjust width and height for your image
+    
+          // Table columns and rows
+          const columns = ["Item Name", "Quantity", "Price", "Total"];
+          const rows = selectedItems.map((item) => [
+            item.name,
+            item.quantity,
+            item.price,
+            (item.price * item.quantity).toFixed(2),
+          ]);
+    
+          // Add title and table to PDF
+          doc.text(`${portal} Bill Summary`, 14, imageHeight + 15); // Adjust the Y position to avoid overlap with the header
+          doc.autoTable({
+            head: [columns],
+            body: rows,
+            startY: imageHeight + 20, // Adjust the Y position after the header
+            theme:"striped",
+            headStyles:{
+              fillColor: "#375f4a"
+            }
+          });
+    
+          // Add total amount at the end
+          doc.text(`Total Amount: ${total.toFixed(2)}`, 14, doc.lastAutoTable.finalY + 10);
+    
+          // Save the PDF
+          doc.save("bill.pdf");
+        };
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+        alert(`Failed to generate PDF: ${error.message}`);
+      }
+    };
 
-    // Table columns and rows
-    const columns = ["Item Name", "Quantity", "Price (₹)", "Total (₹)"];
-    const rows = selectedItems.map((item) => [
-      item.name,
-      item.quantity,
-      item.price,
-      (item.price * item.quantity).toFixed(2),
-    ]);
-
-    // Add title and table to PDF
-    doc.text("Bill Summary", 14, 16);
-    doc.autoTable({
-      startY:20,
-      head: [columns],
-      body: rows,
+   // Helper function to convert image to Base64
+   const getBase64Image = (imgUrl: string): Promise<string> => {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.src = imgUrl;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0);
+        resolve(canvas.toDataURL("image/png"));
+      };
     });
-
-    // Add total amount at the end
-    doc.text(`Total Amount: ₹${total.toFixed(2)}`, 14, doc.lastAutoTable.finalY + 10);
-
-    // Save the PDF
-    doc.save("bill.pdf");
   };
 
   return (
@@ -115,8 +165,8 @@ const BillingForm = () => {
           <label>
             Portal:
             <select value={portal} onChange={handlePortalChange}>
-              <option value="pharmacy">Pharmacy</option>
-              <option value="pathology">Pathology</option>
+              <option value="Pharmacy">Pharmacy</option>
+              <option value="Pathology">Pathology</option>
             </select>
           </label>
 
