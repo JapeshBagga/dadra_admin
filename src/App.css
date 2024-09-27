@@ -1414,7 +1414,7 @@ button:hover {
   width: 60%;
   font-family: Arial, sans-serif;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  background-image: url("..\public\Dadra_Letter Head.svg");
+  background-image: url("..\public\dlh.svg");
   background-repeat: no-repeat;
   background-size: cover; /* Ensures the image covers the entire div */
  /* background-position: center;  Centers the image */

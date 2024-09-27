@@ -155,6 +155,13 @@ const OPDs = () => {
                   <h4>Advice:</h4>
                   <p>{opd.advice}</p>
                 </div>
+                      <br/><hr/> <br/>
+                      <div className="header-opd">
+                        <span className="">
+                        <strong>OPD Timing :</strong> 9am to 2pm, 5 pm to 8pm
+                      </span>
+                    </div>
+                    
                 <button onClick={() => downloadPDF(opd.opdId)}>Print</button>
               </div>
             ))
