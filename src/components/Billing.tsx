@@ -14,14 +14,18 @@ const BillingForm = () => {
   interface Item {
     id: string;
     name: string;
+    batchNo: string;
     price: number;
+    salePrice: number;
   }
   
   // Define types for selected items
   interface SelectedItem {
     name: string;
+    batchNo: string;
     quantity: number;
     price: number;
+    salePrice: number;
   }
   // Fetch items from API based on the portal selected
   useEffect(() => {
@@ -31,7 +35,7 @@ const BillingForm = () => {
           withCredentials: true,
         });
         setItems(response.data);
-        setSelectedItems([{ name: "", quantity: 1, price: 0 }]);
+        setSelectedItems([{ name: "", quantity: 1, price: 0, batchNo: "", salePrice: 0 }]);
       } catch (error) {
         console.error(`Error fetching ${portal} items:`, error);
       }
@@ -48,17 +52,20 @@ const BillingForm = () => {
   };
 
   // Handle item selection and quantity update
-  const handleItemChange = (index, field, value, price) => {
+  const handleItemChange = (index, field, value, price, salePrice, batchNo) => {
     const updatedItems = [...selectedItems];
     updatedItems[index] = {
       ...updatedItems[index],
       [field]: value,
     };
-
+    
     // If the field is 'name', update the price as well
     if (field === "name") {
       updatedItems[index].price = price;
+      updatedItems[index].salePrice = salePrice;
+      updatedItems[index].batchNo = batchNo;
     }
+    console.log("🚀 ~ handleItemChange ~ updatedItems:", updatedItems)
 
     setSelectedItems(updatedItems);
     calculateTotal(updatedItems); // Pass updatedItems to calculateTotal
@@ -66,7 +73,7 @@ const BillingForm = () => {
 
   // Add item to the selected items list
   const addItem = () => {
-    setSelectedItems([...selectedItems, { name: "", quantity: 1, price: 0 }]);
+    setSelectedItems([...selectedItems, { name: "", quantity: 1, price: 0, batchNo: "", salePrice: 0 }]);
   };
 
   // Calculate the total bill amount
@@ -108,11 +115,13 @@ const BillingForm = () => {
           doc.addImage(headerImg, 'PNG', 0, 0, 210, 80); // Adjust width and height for your image
     
           // Table columns and rows
-          const columns = ["Item Name", "Quantity", "Price", "Total"];
+          const columns = ["Item Name", "Batch No.", "Quantity", "MRP", "Sale Price","Total"];
           const rows = selectedItems.map((item) => [
             item.name,
+            item.batchNo,
             item.quantity,
             item.price,
+            item.salePrice,
             (item.price * item.quantity).toFixed(2),
           ]);
     
@@ -187,7 +196,9 @@ const BillingForm = () => {
                         index,
                         "name",
                         e.target.value,
-                        selectedItem?.price || 0
+                        selectedItem?.price || 0,
+                        selectedItem?.salePrice || 0,
+                        selectedItem?.batchNo || ""
                       );
                     }}
                   >
@@ -210,7 +221,7 @@ const BillingForm = () => {
                     value={item.quantity}
                     min="1"
                     onChange={(e) =>
-                      handleItemChange(index, "quantity", e.target.value, item.price)
+                      handleItemChange(index, "quantity", e.target.value, item.price, item?.salePrice, item.batchNo)
                     }
                   />
                 </label>
@@ -229,7 +240,7 @@ const BillingForm = () => {
 
           {/* Download PDF Button */}
           <button type="button" onClick={generatePDF}>
-            Download PDF
+            Print
           </button>
         </form>
       </section>

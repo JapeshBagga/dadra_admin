@@ -99,10 +99,12 @@ const Pharmacy = () => {
                 <th>Name</th>
                 <th>Price</th>
                 <th>Category</th>
+                <th>Sale Price</th>
                 <th>Quantity</th>
                 <th>Expiry Date</th>
                 <th>MFD Date</th>
                 <th>FSSAI No.</th>
+                <th>Batch No.</th>
                 <th>Action</th>
               </tr>
             </thead>
@@ -112,9 +114,13 @@ const Pharmacy = () => {
                     <tr key={medicine?._id}>
                       <td>{medicine.name ?? "-"}</td>
                       <td>
-                        {medicine?.price}
+                        {medicine?.price ?? "-"}
                       </td>
+                      
                       <td>{medicine.category ?? "-"}</td>
+                      <td>
+                        {medicine?.salePrice ?? "-"}
+                      </td>
                       <td>{medicine.quantity ?? "-"}</td>
                       <td>
                         {medicine?.expiryDate
@@ -130,6 +136,9 @@ const Pharmacy = () => {
                       </td>
                       <td>
                         {medicine?.fssaiNo.trim() ? medicine?.fssaiNo : "-"}
+                      </td>
+                      <td>
+                        {medicine?.batchNo?.trim() ? medicine?.batchNo : "-"}
                       </td>
                       <td onClick={() => NavigateToAddMedicine(medicine?._id)}>
                         <a className="custom-link">Edit</a>

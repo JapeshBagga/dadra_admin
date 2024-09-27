@@ -155,7 +155,7 @@ const OPDs = () => {
                   <h4>Advice:</h4>
                   <p>{opd.advice}</p>
                 </div>
-                <button onClick={() => downloadPDF(opd.opdId)}>Download PDF</button>
+                <button onClick={() => downloadPDF(opd.opdId)}>Print</button>
               </div>
             ))
           ) : (

@@ -9,7 +9,7 @@ const OpdForm = () => {
   const { patient, setPatient } = useContext(Context);
   const navigateTo = useNavigate();
   const [formData, setFormData] = useState({
-    opdId: "",
+    // opdId: "",
     bp: "",
     rr: "",
     temperature: "",
@@ -128,16 +128,17 @@ const OpdForm = () => {
         <h1 className="form-title">OPD Details</h1>
         <form className="opd-form" onSubmit={handleSubmit}>
           <h2></h2>
-          <label>
+          {/* <label>
             OPD ID:
             <input
               type="text"
               name="opdId"
               value={formData.opdId}
               onChange={handleChange}
+              defaultValue={Math.random(10000)}
               required
             />
-          </label>
+          </label> */}
           <label>
             Patient Name:
             <input

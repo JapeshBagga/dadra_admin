@@ -14,7 +14,10 @@ const OpdForm = () => {
     expiryDate: "",
     mfdDate: "",
     fssaiNo: "",
+    batchNo: "",
     price: "",
+    salePrice: "",
+
   });
 
   useEffect(() => {
@@ -32,7 +35,9 @@ const OpdForm = () => {
             expiryDate: data.expiryDate?.split("T")[0],
             mfdDate: data.mfdDate?.split("T")[0],
             fssaiNo: data.fssaiNo,
+            batchNo: data.batchNo,
             price: data.price,
+            salePrice: data.salePrice,
           });
         } catch (error) {
           toast.error("Error:", error);
@@ -152,6 +157,24 @@ const OpdForm = () => {
               type="text"
               name="fssaiNo"
               value={formData.fssaiNo}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Batch No.:
+            <input
+              type="text"
+              name="batchNo"
+              value={formData.batchNo}
+              onChange={handleChange}
+            />
+          </label>
+          <label>
+            Sale Price:
+            <input
+              type="text"
+              name="salePrice"
+              value={formData.salePrice}
               onChange={handleChange}
             />
           </label>
