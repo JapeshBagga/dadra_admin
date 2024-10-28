@@ -4,12 +4,18 @@ import jsPDF, { jsPDFOptions } from "jspdf";
 import "jspdf-autotable";
 import SERVER_URL from "../env";
 import { jsPDFConstructor, jsPDFDocument } from "jspdf-autotable";
+import { format } from "date-fns";
 
 const BillingForm = () => {
   const [portal, setPortal] = useState("Pharmacy"); // default portal
-  const [items, setItems] = useState<Item[]>([]); // items fetched from the API
-  const [selectedItems, setSelectedItems] = useState<SelectedItem[]>([]); // items user selected with quantity
+  const [items, setItems] = useState<any[]>([]); // items fetched from the API
+  const [selectedItems, setSelectedItems] = useState<any[]>([]); // items user selected with quantity
   const [total, setTotal] = useState(0);
+  const [patientName, setPatientName] = useState(""); // New state for patient name
+  const [opdId, setOpdId] = useState(""); // New state for OPD ID
+  const [patientAge, setPatientAge] = useState("");
+  const [patientAddress, setPatientAddress] = useState("");
+  const [referredBy, setReferredBy] = useState("");
 
   interface Item {
     id: string;
@@ -35,7 +41,17 @@ const BillingForm = () => {
           withCredentials: true,
         });
         setItems(response.data);
-        setSelectedItems([{ name: "", quantity: 1, price: 0, batchNo: "", salePrice: 0 }]);
+        if(portal === "Pathology"){
+          setSelectedItems([{  
+            name: "", 
+            value_observed: "", 
+            unit: "", 
+            normal_range: "",
+            price: 0  // Add price field
+          }]);
+        }else{
+         setSelectedItems([{ name: "", quantity: 1, price: 0, batchNo: "", salePrice: 0 }]);
+        }
       } catch (error) {
         console.error(`Error fetching ${portal} items:`, error);
       }
@@ -54,10 +70,19 @@ const BillingForm = () => {
   // Handle item selection and quantity update
   const handleItemChange = (index, field, value, price, salePrice, batchNo) => {
     const updatedItems = [...selectedItems];
-    updatedItems[index] = {
-      ...updatedItems[index],
-      [field]: value,
-    };
+    
+    // If the field is price, convert it to a number
+    if (field === "price") {
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [field]: parseFloat(value) || 0
+      };
+    } else {
+      updatedItems[index] = {
+        ...updatedItems[index],
+        [field]: value,
+      };
+    }
     
     // If the field is 'name', update the price as well
     if (field === "name") {
@@ -65,33 +90,45 @@ const BillingForm = () => {
       updatedItems[index].salePrice = salePrice;
       updatedItems[index].batchNo = batchNo;
     }
-    console.log("🚀 ~ handleItemChange ~ updatedItems:", updatedItems)
 
     setSelectedItems(updatedItems);
-    calculateTotal(updatedItems); // Pass updatedItems to calculateTotal
+    calculateTotal(updatedItems);
   };
 
   // Add item to the selected items list
   const addItem = () => {
-    setSelectedItems([...selectedItems, { name: "", quantity: 1, price: 0, batchNo: "", salePrice: 0 }]);
+    if(portal === "Pathology"){
+      setSelectedItems([...selectedItems, {  
+        name: "", 
+        value_observed: "", 
+        unit: "", 
+        normal_range: "",
+        price: 0  // Add price field
+      }]);
+    }else{
+     setSelectedItems([...selectedItems, { name: "", quantity: 1, price: 0, batchNo: "", salePrice: 0 }]);
+    }
   };
 
   // Calculate the total bill amount
   const calculateTotal = (updatedItems) => {
-    const totalAmount = updatedItems.reduce(
-      (sum, item) => sum + item.price * item.quantity,
-      0
-    );
+    const totalAmount = updatedItems.reduce((sum, item) => {
+      if (portal === "Pharmacy") {
+        return sum + (item.price * (item.quantity || 1));
+      } else {
+        return sum + (Number(item.price) || 0);
+      }
+    }, 0);
     setTotal(totalAmount);
   };
 
     // Generate PDF for the bill
     const generatePDF = async (): Promise<void> => {
-      try{
+      try {
         const doc:jsPDFConstructor = new jsPDF();
-    
-        // Add the header image to the PDF (position: x: 0, y: 0)
-        const headerImg = await getBase64Image('/Dadra_Letter Head-fotor.png'); // Use the relative path from the public folder
+        
+        // Add the header image to the PDF
+        const headerImg = await getBase64Image('/Dadra_Letter Head-fotor.png');
         
         // Define the maximum width and height of the image
         const maxWidth = 910; // Page width in jsPDF (for A4 size)
@@ -112,37 +149,78 @@ const BillingForm = () => {
           }
     
           // Add the image to the PDF with correct dimensions
-          doc.addImage(headerImg, 'PNG', 0, 0, 210, 80); // Adjust width and height for your image
-    
-          // Table columns and rows
-          const columns = ["Item Name", "Batch No.", "Quantity", "MRP", "Sale Price","Total"];
-          const rows = selectedItems.map((item) => [
-            item.name,
-            item.batchNo,
-            item.quantity,
-            item.price,
-            item.salePrice,
-            (item.price * item.quantity).toFixed(2),
-          ]);
-    
-          // Add title and table to PDF
-          doc.text(`${portal} Bill Summary`, 14, imageHeight + 15); // Adjust the Y position to avoid overlap with the header
+          doc.addImage(headerImg, 'PNG', 0, 0, 210, 80);
+          console.log(selectedItems);
+          let columns, rows;
+          if (portal === "Pharmacy") {
+            columns = ["Item Name", "Batch No.", "Quantity", "MRP", "Sale Price", "Total"];
+            rows = selectedItems.map((item) => [
+              item.name,
+              item.batchNo,
+              item.quantity,
+              item.price,
+              item.salePrice,
+              (item.price * item.quantity).toFixed(2),
+            ]);
+          } else if (portal === "Pathology") {
+            columns = ["Test Name", "Value Observed", "Unit", "Normal Range", "Price"];
+            rows = selectedItems.map((item) => [
+              item.name,
+              item.value_observed || "",
+              item.unit || "",
+              item.normal_range || "",
+              item.price || "0"
+            ]);
+          }
+
+          // Set font size for patient details
+          doc.setFontSize(11);
+          
+          // Calculate starting positions
+          const startY = 45; // Adjust this value based on your header image height
+          const leftColX = 14;
+          const rightColX = 120;
+          const lineSpacing = 7;
+
+          // Add patient details in two columns
+          // Left Column
+          doc.text(`Patient Name: ${patientName}`, leftColX, startY);
+          doc.text(`Age: ${patientAge}`, leftColX, startY + lineSpacing);
+          doc.text(`Address: ${patientAddress}`, leftColX, startY + (lineSpacing * 2));
+          
+          // Right Column
+          doc.text(`Date: ${format(new Date(), 'dd/MM/yyyy')}`, rightColX, startY);
+          doc.text(`OPD ID: ${opdId}`, rightColX, startY + lineSpacing);
+          doc.text(`Referred By: ${referredBy}`, rightColX, startY + (lineSpacing * 2));
+
+          // Add a line separator
+          doc.setLineWidth(0.5);
+          doc.line(14, startY + (lineSpacing * 3), 196, startY + (lineSpacing * 3));
+
+          // Reset font size for table title
+          doc.setFontSize(12);
+          doc.text(`Details:`, 14, startY + (lineSpacing * 4));
+
+          // Add the table with items
           doc.autoTable({
             head: [columns],
             body: rows,
-            startY: imageHeight + 20, // Adjust the Y position after the header
-            theme:"striped",
-            headStyles:{
+            startY: startY + (lineSpacing * 5),
+            theme: "striped",
+            headStyles: {
               fillColor: "#375f4a"
-            }
+            },
+            margin: { left: 14, right: 14 },
           });
-    
-          // Add total amount at the end
-          doc.text(`Total Amount: ${total.toFixed(2)}`, 14, doc.lastAutoTable.finalY + 10);
-    
+
+          // Add total amount at the bottom
+          doc.setFontSize(12);
+          doc.text(`Total Amount: ${total.toFixed(2)} Rs`, 14, doc.lastAutoTable.finalY + 10);
+
           // Save the PDF
           doc.save("bill.pdf");
         };
+        if(portal === "Pharmacy") await updateQuantity();
       } catch (error) {
         console.error("Error generating PDF:", error);
         alert(`Failed to generate PDF: ${error.message}`);
@@ -165,6 +243,16 @@ const BillingForm = () => {
     });
   };
 
+  const updateQuantity = async () => {
+    try {
+      const response = await axios.post(`${SERVER_URL}/api/v1/${portal.toLowerCase()}/updateQuantity`, selectedItems, {
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.error(`Error fetching ${portal} items:`, error);
+    }
+  };
+
   return (
     <section className="page">
       <section className="container form-component billing-form">
@@ -178,6 +266,83 @@ const BillingForm = () => {
               <option value="Pathology">Pathology</option>
             </select>
           </label>
+          
+          {/* Patient Name and OPD ID fields on the same line */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', margin: '2px 9px' }}>
+            <input
+              type="text"
+              placeholder="Patient Name"
+              value={patientName}
+              onChange={(e) => setPatientName(e.target.value)}
+              style={{
+                // flex: '1 1 200px',
+                padding: '4px 8px',
+                margin: '4px 0',
+                boxSizing: 'border-box',
+                fontSize: '14px',
+                height: '30px'
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Age"
+              value={patientAge}
+              onChange={(e) => setPatientAge(e.target.value)}
+              style={{
+                // flex: '1 1 100px',
+                padding: '4px 8px',
+                margin: '4px 0',
+                boxSizing: 'border-box',
+                fontSize: '14px',
+                height: '30px'
+              }}
+            />
+            <input
+              type="text"
+              placeholder="OPD ID"
+              value={opdId}
+              onChange={(e) => setOpdId(e.target.value)}
+              style={{
+                // flex: '1 1 150px',
+                padding: '4px 8px',
+                margin: '4px 0',
+                boxSizing: 'border-box',
+                fontSize: '14px',
+                height: '30px'
+              }}
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', margin: '2px 9px' }}>
+            <input
+              type="text"
+              placeholder="Address"
+              value={patientAddress}
+              onChange={(e) => setPatientAddress(e.target.value)}
+              style={{
+                // flex: '2 1 300px',
+                padding: '4px 8px',
+                margin: '4px 0',
+                boxSizing: 'border-box',
+                fontSize: '14px',
+                height: '30px'
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Referred By"
+              value={referredBy}
+              onChange={(e) => setReferredBy(e.target.value)}
+              style={{
+                // flex: '1 1 200px',
+                padding: '4px 8px',
+                margin: '4px 0',
+                boxSizing: 'border-box',
+                fontSize: '14px',
+                height: '30px'
+              }}
+            />
+          </div>
 
           {/* Item Selection */}
           <div className="items-section">
@@ -214,17 +379,64 @@ const BillingForm = () => {
                     ))}
                   </select>
                 </label>
-                <label>
-                  Quantity:
-                  <input
-                    type="number"
-                    value={item.quantity}
-                    min="1"
-                    onChange={(e) =>
-                      handleItemChange(index, "quantity", e.target.value, item.price, item?.salePrice, item.batchNo)
-                    }
-                  />
-                </label>
+                
+                {portal === "Pharmacy" ? (
+                  <label>
+                    Quantity:
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      min="1"
+                      onChange={(e) =>
+                        handleItemChange(index, "quantity", e.target.value, item.price, item?.salePrice, item.batchNo)
+                      }
+                    />
+                  </label>
+                ) : (
+                  <>
+                    <label>
+                      Value Observed:
+                      <input
+                        type="text"
+                        value={item.value_observed}
+                        onChange={(e) =>
+                          handleItemChange(index, "value_observed", e.target.value, item.price, item?.salePrice, item.batchNo)
+                        }
+                      />
+                    </label>
+                    <label>
+                      Unit:
+                      <input
+                        type="text"
+                        value={item.unit}
+                        onChange={(e) =>
+                          handleItemChange(index, "unit", e.target.value, item.price, item?.salePrice, item.batchNo)
+                        }
+                      />
+                    </label>
+                    <label>
+                      Normal Range:
+                      <input
+                        type="text"
+                        value={item.normal_range}
+                        onChange={(e) =>
+                          handleItemChange(index, "normal_range", e.target.value, item.price, item?.salePrice, item.batchNo)
+                        }
+                      />
+                    </label>
+                    <label>
+                      Price:
+                      <input
+                        type="text"
+                        value={item.price}
+                        min="0"
+                        onChange={(e) =>
+                          handleItemChange(index, "price", e.target.value, e.target.value, item?.salePrice, item.batchNo)
+                        }
+                      />
+                    </label>
+                  </>
+                )}
               </div>
             ))}
 

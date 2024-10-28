@@ -96,12 +96,12 @@ const Pathology = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Case ID</th>
+                <th>Value Observed</th>
                 <th>Patient Name</th>
                 {/* <th>Quantity</th> */}
-                <th>Sample Collected Date</th>
-                <th>Expected Completion Date</th>
-                <th>Price</th>
+                <th>Unit</th>
+                <th>Normal Range</th>
+                {/* <th>Price</th> */}
                 <th>Action</th>
               </tr>
             </thead>
@@ -110,9 +110,12 @@ const Pathology = () => {
                 ? currenttests.map((test) => (
                     <tr key={test?._id}>
                       <td>{test.name ?? "-"}</td>
-                      <td>{test.case_id ?? "-"}</td>
+                      <td>{test.value_observed ?? "-"}</td>
                       <td>{test.patientName ?? "-"}</td>
-                      <td>
+                      <td>{test.unit ?? "-"}</td>
+                      <td>{test.normal_range ?? "-"}</td>
+
+                      {/* <td>
                         {test?.sample_collected_date
                           ? `${moment(test?.sample_collected_date).format(
                               "Do MMMM YY"
@@ -125,8 +128,8 @@ const Pathology = () => {
                               "Do MMMM YY"
                             )}`
                           : "-"}
-                      </td>
-                      <td>{test.price}</td>
+                      </td> */}
+                      {/* <td>{test.price}</td> */}
                       {/*  <td>
                        {test?.fssaiNo.trim() ? test?.fssaiNo : "-"}
                       </td> */}

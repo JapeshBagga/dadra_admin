@@ -264,17 +264,13 @@ const OpdForm = () => {
               <div key={index} className="medicine">
                 <label>
                   Category:
-                  <select
+                  <input
+                    type="text"
                     name="category"
                     value={medicine.category}
                     onChange={(e) => handleMedicineChange(index, e)}
                     required
-                  >
-                    <option value="">Select</option>
-                    <option value="Tablet">Tablet</option>
-                    <option value="Capsule">Capsule</option>
-                    <option value="Syrup">Syrup</option>
-                  </select>
+                  />
                 </label>
                 <label>
                   Name:

@@ -12,7 +12,7 @@ const Pharmacy = () => {
   const [medicines, setMedicines] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [medicinesPerPage] = useState(15);
+  const [medicinesPerPage] = useState(30);
   const { isAuthenticated, admin } = useContext(Context);
 
   useEffect(() => {

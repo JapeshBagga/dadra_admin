@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [appointmentsPerPage] = useState(15);
+  const [appointmentsPerPage] = useState(30);
   const { patient, setPatient } = useContext(Context);
 
   useEffect(() => {

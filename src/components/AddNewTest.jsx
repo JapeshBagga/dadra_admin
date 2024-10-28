@@ -10,10 +10,9 @@ const OpdForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     patientName: "",
-    case_id: "",
-    price: "",
-    sample_collected_date: "",
-    expected_date: "",
+    value_observed: "",
+    unit: "",
+    normal_range: "",
   });
 
   useEffect(() => {
@@ -26,9 +25,9 @@ const OpdForm = () => {
           );
           setFormData({
             name: data.name,
-            case_id: data.case_id,
-            sample_collected_date: data.sample_collected_date?.split("T")[0],
-            expected_date: data.expected_date?.split("T")[0],
+            unit: data.unit,
+            value_observed: data.value_observed,
+            normal_range: data.normal_range,
           });
         } catch (error) {
           toast.error("Error:", error);
@@ -93,11 +92,11 @@ const OpdForm = () => {
             />
           </label>
           <label>
-            Case ID:
+          Value Observed:
             <input
               type="text"
-              name="case_id"
-              value={formData.case_id}
+              name="value_observed"
+              value={formData.value_observed}
               onChange={handleChange}
             />
           </label>
@@ -110,7 +109,7 @@ const OpdForm = () => {
               onChange={handleChange}
             />
           </label>
-          <label>
+          {/* <label>
            Price
             <input
               type="text"
@@ -118,7 +117,7 @@ const OpdForm = () => {
               value={formData.price}
               onChange={handleChange}
             />
-          </label>
+          </label> */}
           {/* <label>
             Lot Size:
             <input
@@ -142,20 +141,20 @@ const OpdForm = () => {
             />
           </label> */}
           <label>
-            Sample Collected Date:
+            Unit:
             <input
-              type="date"
-              name="sample_collected_date"
-              value={formData.sample_collected_date}
+              type="text"
+              name="unit"
+              value={formData.unit}
               onChange={handleChange}
             />
           </label>
           <label>
-            Expected Completion Date:
+            Normal Range:
             <input
-              type="date"
-              name="expected_date"
-              value={formData.expected_date}
+              type="text"
+              name="normal_range"
+              value={formData.normal_range}
               onChange={handleChange}
             />
           </label>

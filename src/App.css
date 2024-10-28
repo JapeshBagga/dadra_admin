@@ -199,7 +199,7 @@ body {
 }
 
 .dashboard .banner:first-child {
-  height: 35vh;
+  height: 25vh;
   display: flex;
   gap: 20px;
 }
@@ -932,7 +932,7 @@ body {
   gap: 20px;
 }
 .dashboard .banner:first-child {
-  height: 35vh;
+  height: 25vh;
   display: flex;
   gap: 20px;
 }
