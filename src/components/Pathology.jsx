@@ -97,7 +97,7 @@ const Pathology = () => {
               <tr>
                 <th>Name</th>
                 <th>Value Observed</th>
-                <th>Patient Name</th>
+                {/* <th>Patient Name</th> */}
                 {/* <th>Quantity</th> */}
                 <th>Unit</th>
                 <th>Normal Range</th>
@@ -111,7 +111,7 @@ const Pathology = () => {
                     <tr key={test?._id}>
                       <td>{test.name ?? "-"}</td>
                       <td>{test.value_observed ?? "-"}</td>
-                      <td>{test.patientName ?? "-"}</td>
+                      {/* <td>{test.patientName ?? "-"}</td> */}
                       <td>{test.unit ?? "-"}</td>
                       <td>{test.normal_range ?? "-"}</td>
 

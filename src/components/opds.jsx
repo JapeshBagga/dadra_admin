@@ -81,8 +81,11 @@ const OPDs = () => {
                     <p>
                       <strong>Patient Name:</strong> {opd.patientId.name}
                     </p>
-                    <p>
+                    {/* <p>
                       <strong>Gender:</strong> {opd.patientId.gender}
+                    </p> */}
+                    <p>
+                      <strong>Phone:</strong> {opd.patientId.phone}
                     </p>
                     <p>
                       <strong>Address:</strong> {opd.patientId.address}
@@ -96,7 +99,7 @@ const OPDs = () => {
                       <strong>BP:</strong> {opd.bp}
                     </p>
                     <p>
-                      <strong>RR:</strong> {opd.rr}
+                      <strong>PR:</strong> {opd.rr}
                     </p>
                     <p>
                       <strong>Temperature:</strong> {opd.temperature}
@@ -104,9 +107,7 @@ const OPDs = () => {
                     <p>
                       <strong>Age:</strong> {opd.patientId.age}
                     </p>
-                    <p>
-                      <strong>Phone:</strong> {opd.patientId.phone}
-                    </p>
+                    
                   </div>
                 </div>
                 <div className="investigation">
