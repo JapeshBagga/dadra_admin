@@ -97,7 +97,7 @@ const Pharmacy = () => {
             <thead>
               <tr>
                 <th>Name</th>
-                <th>Price</th>
+                <th>MRP</th>
                 <th>Category</th>
                 <th>Sale Price</th>
                 <th>Quantity</th>

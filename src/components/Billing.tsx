@@ -153,14 +153,14 @@ const BillingForm = () => {
           console.log(selectedItems);
           let columns, rows;
           if (portal === "Pharmacy") {
-            columns = ["Item Name", "Batch No.", "Quantity", "MRP", "Sale Price", "Total"];
+            columns = ["Item Name", "Batch No.", "Quantity", "Sale Price","MRP"];
             rows = selectedItems.map((item) => [
               item.name,
               item.batchNo,
               item.quantity,
               item.price,
               item.salePrice,
-              (item.price * item.quantity).toFixed(2),
+              // (item.price * item.quantity).toFixed(2),
             ]);
           } else if (portal === "Pathology") {
             columns = ["Test Name", "Value Observed", "Unit", "Normal Range", "Price"];
@@ -425,7 +425,7 @@ const BillingForm = () => {
                       />
                     </label>
                     <label>
-                      Price:
+                      MRP:
                       <input
                         type="text"
                         value={item.price}

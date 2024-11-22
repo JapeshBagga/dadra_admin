@@ -90,9 +90,9 @@ const OPDs = () => {
                     <p>
                       <strong>Address:</strong> {opd.patientId.address}
                     </p>
-                    <p>
+                    {/* <p>
                       <strong>Known Allergies:</strong> {opd.knownAllergies}
-                    </p>
+                    </p> */}
                   </div>
                   <div className="vitals">
                     <p>

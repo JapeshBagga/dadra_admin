@@ -179,7 +179,7 @@ const OpdForm = () => {
             />
           </label>
           <label>
-            Price:
+            MRP:
             <input
               type="text"
               name="price"
