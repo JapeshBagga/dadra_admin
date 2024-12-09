@@ -89,6 +89,13 @@ const BillingForm = () => {
       updatedItems[index].price = price;
       updatedItems[index].salePrice = salePrice;
       updatedItems[index].batchNo = batchNo;
+
+      // If portal is Pathology, update unit and normal range based on test name
+      const selectedTest = items.find(item => item.name === value);
+      if (portal === "Pathology" && selectedTest) {
+        updatedItems[index].unit = selectedTest.unit;
+        updatedItems[index].normal_range = selectedTest.normal_range;
+      }
     }
 
     setSelectedItems(updatedItems);
@@ -163,13 +170,13 @@ const BillingForm = () => {
               // (item.price * item.quantity).toFixed(2),
             ]);
           } else if (portal === "Pathology") {
-            columns = ["Test Name", "Value Observed", "Unit", "Normal Range", "Price"];
+            columns = ["Test Name", "Value Observed", "Unit", "Normal Range"];
             rows = selectedItems.map((item) => [
               item.name,
               item.value_observed || "",
               item.unit || "",
               item.normal_range || "",
-              item.price || "0"
+              // item.price || "0"
             ]);
           }
 
@@ -215,8 +222,9 @@ const BillingForm = () => {
 
           // Add total amount at the bottom
           doc.setFontSize(12);
-          doc.text(`Total Amount: ${total.toFixed(2)} Rs`, 14, doc.lastAutoTable.finalY + 10);
-
+          if(portal == "Pharmacy"){
+            doc.text(`Total Amount: ${total.toFixed(2)} Rs`, 14, doc.lastAutoTable.finalY + 10);
+          }
           // Save the PDF
           doc.save("bill.pdf");
         };
@@ -424,7 +432,7 @@ const BillingForm = () => {
                         }
                       />
                     </label>
-                    <label>
+                    { portal == "Pharmacy" && <label>
                       MRP:
                       <input
                         type="text"
@@ -434,7 +442,7 @@ const BillingForm = () => {
                           handleItemChange(index, "price", e.target.value, e.target.value, item?.salePrice, item.batchNo)
                         }
                       />
-                    </label>
+                    </label>}
                   </>
                 )}
               </div>
@@ -446,9 +454,9 @@ const BillingForm = () => {
           </div>
 
           {/* Total Display */}
-          <div className="total-section">
+          { portal == "Pharmacy" && <div className="total-section">
             <h3>Total Amount: ₹{total.toFixed(2)}</h3>
-          </div>
+          </div>}
 
           {/* Download PDF Button */}
           <button type="button" onClick={generatePDF}>

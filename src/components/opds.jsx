@@ -102,6 +102,10 @@ const OPDs = () => {
                       <strong>PR:</strong> {opd.rr}
                     </p>
                     <p>
+                      <strong>
+                        RBS:</strong> {opd.rbs}
+                    </p>
+                    <p>
                       <strong>Temperature:</strong> {opd.temperature}
                     </p>
                     <p>
